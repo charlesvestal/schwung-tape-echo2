@@ -14,6 +14,9 @@ import pathlib
 import re
 import sys
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import help_font
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 fails = []
 
@@ -164,6 +167,51 @@ if mod.get("component_type") == "audio_fx":
                            ("scripts/deploy.sh", f'SO="{want}"')):
         check(needle in (ROOT / script).read_text(),
               f"{script} must ship {want}")
+
+# ---- help.json is in the shape the Help viewer actually reads ---------
+# The viewer's whole test is `if (helpData.children)` (shadow_ui.js), so a file
+# keyed `sections` parses fine, is dropped without a warning, and the module
+# reads "No help content available". This shipped that way for six releases
+# (issue #3). Leaves are {title, lines}; lines are per DISPLAY LINE, nothing
+# wraps, and print() drops whatever passes x=127 silently.
+help_doc = json.loads((ROOT / "src/help.json").read_text())
+check("children" in help_doc,
+      "help.json needs a top-level `children` array or the viewer drops it "
+      "silently (a `sections` key is ignored)")
+
+def _walk_help(node, path):
+    kids, lines = node.get("children"), node.get("lines")
+    check(bool(node.get("title")), f"help node at {path} needs a title")
+    check(bool(kids) != bool(lines),
+          f"help node {path}: exactly one of children (branch) or lines (leaf)")
+    if lines is not None:
+        check(isinstance(lines, list),
+              f"help leaf {path}: lines must be a list of display lines")
+        for i, ln in enumerate(lines or []):
+            check(isinstance(ln, str), f"help leaf {path} line {i} is not a string")
+            if not isinstance(ln, str):
+                continue
+            bad = [c for c in ln if not help_font.supported(c)]
+            check(not bad,
+                  f"help {path} line {i}: no glyph for {bad!r} - the font is "
+                  f"printable ASCII plus AOUaou/euro/dagger/degree, and an "
+                  f"unmapped char renders as a 1px gap")
+            if not bad:
+                w = help_font.width(ln)
+                check(w <= help_font.LINE_BUDGET,
+                      f"help {path} line {i}: {w}px wide, over the "
+                      f"{help_font.LINE_BUDGET}px display - the tail is dropped "
+                      f"with no ellipsis: {ln!r}")
+    for k in (kids or []):
+        _walk_help(k, f"{path}/{k.get('title', '?')}")
+
+for k in help_doc.get("children", []):
+    _walk_help(k, k.get("title", "?"))
+
+# and it has to actually ship
+for script in ("scripts/docker-build.sh",):
+    check("help.json" in (ROOT / script).read_text(),
+          f"{script} must copy help.json into dist/")
 
 # ---- module.json under the 8 KB loader cap ----------------------------
 sz = (ROOT / "src/module.json").stat().st_size
