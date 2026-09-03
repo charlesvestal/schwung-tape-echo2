@@ -49,9 +49,6 @@ names the module it wants, though, so point it at this one first:
 python3 tools/convert_tapedelay_patch.py MyPatch.json
 ```
 
-Works with [Movy](https://github.com/DimaDake/schwung-movy) — a
-`movy_config.json` ships with the module.
-
 ## Remote panel
 
 A tape-deck style editor in the browser: draggable knobs, mode and rate-note

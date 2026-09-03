@@ -724,7 +724,7 @@ static int te2_write_str(char *buf, int buf_len, const char *s)
 
 /* The knobs the root page offers, in order. Move has 8 encoders, and the
  * chain UI shows exactly the "knobs" list — the rest stay reachable through
- * the full "params" array (and through movy's own pages). */
+ * the full "params" array. */
 /* Three sections. A short page needs its own LEVEL, not a page break: the
  * planner locks a level's first page to exactly knobs[0..7] because the shim
  * maps the physical encoders to that same array, so ADVANCED-at-six exists by
@@ -744,9 +744,8 @@ static const char *const te2_knobs_advanced[7] = {
      *
      * RATE last: it is TIME's raw half, the way DIV is SYNC's on OUT. TIME
      * covers it on MAIN, but leaving it off every level made it the one
-     * published param no hierarchy-driven UI could reach, while movy_config
-     * and the web panel both showed it. Same list, three places, one of them
-     * out of step. */
+     * published param no hierarchy-driven UI could reach, while the web panel
+     * showed it. Same list, two places, one of them out of step. */
     "input_send", "input_volume", "tape_age", "wow_flutter", "bass", "treble",
     "repeat_rate",
 };

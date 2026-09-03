@@ -4,8 +4,8 @@
 set -euo pipefail
 TARGET="${1:-all}"
 
-# ---- Config contract: movy_config / chain_params / C table / chain UI must
-# all agree, and enum options must stay distinct in movy's 5-char readout.
+# ---- Config contract: chain_params / C table / chain UI / hierarchy pages
+# must all describe the same parameter surface.
 echo "=== config contract ==="
 python3 tools/check_config.py
 
@@ -87,7 +87,6 @@ rm -rf dist/tape-echo2
 mkdir -p dist/tape-echo2
 cp build/tape-echo2.so    dist/tape-echo2/
 cp src/module.json       dist/tape-echo2/
-cp src/movy_config.json  dist/tape-echo2/
 cp src/ui_chain.js       dist/tape-echo2/
 cp src/help.json         dist/tape-echo2/
 cp src/web_ui.html       dist/tape-echo2/

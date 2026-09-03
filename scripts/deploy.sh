@@ -23,7 +23,6 @@ ssh "$HOST" "mkdir -p $DEST"
 
 scp -q "$SRC/build/$SO"             "$HOST:$DEST/$SO.new"
 scp -q "$SRC/src/module.json"       "$HOST:$DEST/module.json.new"
-scp -q "$SRC/src/movy_config.json"  "$HOST:$DEST/movy_config.json.new"
 scp -q "$SRC/src/ui_chain.js"       "$HOST:$DEST/ui_chain.js.new"
 scp -q "$SRC/src/help.json"         "$HOST:$DEST/help.json.new"
 scp -q "$SRC/src/web_ui.html"       "$HOST:$DEST/web_ui.html.new"
@@ -32,11 +31,10 @@ scp -q "$SRC/src/web_ui.html"       "$HOST:$DEST/web_ui.html.new"
 ssh "$HOST" "cd $DEST && \
     mv -f $SO.new $SO && \
     mv -f module.json.new module.json && \
-    mv -f movy_config.json.new movy_config.json && \
     mv -f ui_chain.js.new ui_chain.js && \
     mv -f help.json.new help.json && \
     mv -f web_ui.html.new web_ui.html && \
-    chmod 755 $SO && rm -f dsp.so && ls -l $SO module.json movy_config.json ui_chain.js"
+    chmod 755 $SO && rm -f dsp.so movy_config.json && ls -l $SO module.json ui_chain.js"
 
 # Loader test binary (run it on the device: cd $DEST && ./te2_loadtest ./$SO)
 if [ -f "$SRC/build/te2_loadtest" ]; then

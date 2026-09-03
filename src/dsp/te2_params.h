@@ -2,8 +2,9 @@
  *
  * The Move-facing parameter surface. Single source of truth: the DSP shell,
  * the chain_params JSON served via get_param, the ui_hierarchy, and the state
- * blob all iterate this table. movy_config.json (the curated knob layout)
- * mirrors it by hand — tools/check_config.py fails the build if they drift.
+ * blob all iterate this table. The te2_knobs_* page tables in
+ * tape_echo_plugin.cpp mirror it by hand — tools/check_config.py fails the
+ * build if they drift.
  *
  * Order matters: the first TE2_VISIBLE_PARAM_COUNT entries are the published
  * surface. Everything after that is still settable via set_param and still
@@ -75,10 +76,9 @@ typedef struct {
     const char  *display_format; /* printf-ish ".0f" / ".0%"; null for none */
 } te2_param_t;
 
-/* Movy truncates an enum option to 5 chars on the knob readout
- * (store.ts formatValue), so every name must stay DISTINCT within its first
- * five characters — "Head 1"/"Head 2"/"Head 3" all rendered as "Head ".
- * R = spring reverb; digits are the active playback heads. */
+/* Kept short and distinct at the front: the display has room for a few
+ * characters per knob, and "Head 1"/"Head 2"/"Head 3" are indistinguishable
+ * once cut. R = spring reverb; digits are the active playback heads. */
 static const char *const te2_opts_mode[12] = {
     "H1", "H2", "H3", "H2+3",
     "H1+R", "H2+R", "H3+R", "H12+R",

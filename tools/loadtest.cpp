@@ -75,9 +75,9 @@ int main(int argc, char **argv)
     fx->get_param(inst, "mode", buf, sizeof buf);
     CHECK(!strcmp(buf, "H1"), "enum set by index, get by name");
 
-    /* Movy commits enums BY NAME (verified against its model: the knob writes
-     * the option string, not an index), so every published option must survive
-     * a name -> set_param -> get_param round trip. */
+    /* Hosts commit enums BY NAME (the knob writes the option string, not an
+     * index), so every published option must survive a name -> set_param ->
+     * get_param round trip. */
     {
         const char *modes[12] = { "H1", "H2", "H3", "H2+3", "H1+R", "H2+R",
                                   "H3+R", "H12+R", "H23+R", "H13+R", "H123R", "Rev" };
@@ -343,9 +343,8 @@ int main(int argc, char **argv)
         /* Every published param must be reachable on SOME section's page —
          * no exceptions. repeat_rate used to be excepted here on the grounds
          * that TIME drives it, but it stayed in chain_params and on both
-         * movy's Advanced page and the web panel, so it was reachable in
-         * three surfaces and missing from the fourth. An exception in the
-         * gate is how that survived. (issue #2) */
+         * the web panel, so it was reachable elsewhere and missing here. An
+         * exception in the gate is how that survived. (issue #2) */
         {
             char h[16384] = {0};
             fx->get_param(m, "ui_hierarchy", h, sizeof h);

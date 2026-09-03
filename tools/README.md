@@ -1,6 +1,6 @@
 # tools/
 
-`check_config.py`, `loadtest.cpp` and `movy_layout.mjs` are part of the build —
+`check_config.py` and `loadtest.cpp` are part of the build —
 see `scripts/docker-build.sh`.
 
 The other two are **not built by default**. They exist because the legacy-import
