@@ -1,6 +1,6 @@
 {
-  "version": "1.4.3",
-  "download_url": "https://github.com/athousanddetails/schwung-tape-echo2/releases/download/v1.4.3/tape-echo2-module.tar.gz",
+  "version": "1.4.4",
+  "download_url": "https://github.com/athousanddetails/schwung-tape-echo2/releases/download/v1.4.4/tape-echo2-module.tar.gz",
   "name": "Tape Echo 2",
   "description": "Component-modeled vintage three-head tape echo with spring reverb: 12 head/reverb modes, in-loop tape saturation, wow & flutter, tape age, tempo sync.",
   "repo_url": "https://github.com/athousanddetails/schwung-tape-echo2"
