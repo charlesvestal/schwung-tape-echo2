@@ -34,7 +34,7 @@ ssh "$HOST" "cd $DEST && \
     mv -f ui_chain.js.new ui_chain.js && \
     mv -f help.json.new help.json && \
     mv -f web_ui.html.new web_ui.html && \
-    chmod 755 $SO && rm -f dsp.so movy_config.json && ls -l $SO module.json ui_chain.js"
+    chmod 755 $SO && rm -f dsp.so && ls -l $SO module.json ui_chain.js"
 
 # Loader test binary (run it on the device: cd $DEST && ./te2_loadtest ./$SO)
 if [ -f "$SRC/build/te2_loadtest" ]; then
