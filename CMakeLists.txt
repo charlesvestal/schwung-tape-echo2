@@ -29,6 +29,14 @@ add_library(tape_echo2 SHARED
 target_include_directories(tape_echo2 PRIVATE ${TE2_INCLUDES})
 target_link_libraries(tape_echo2 PRIVATE m pthread)
 target_link_options(tape_echo2 PRIVATE ${TE2_STATIC_LINK})
+# glibc marks any DSO that exports an STB_GNU_UNIQUE symbol NODELETE:
+# dlclose() never unmaps it, so the module's memory is never freed and
+# reloading after an update reuses the old image instead of the new file.
+# Two sources of UNIQUE here: the core's static constexpr members (C++17
+# inline variables) -> -fno-gnu-unique; and the statically linked libstdc++
+# (std::string::npos, the COW empty rep) -> keep its symbols out of .dynsym.
+target_compile_options(tape_echo2 PRIVATE -fno-gnu-unique)
+target_link_options(tape_echo2 PRIVATE -Wl,--exclude-libs,ALL)
 # audio_fx: the chain host hardcodes "<audio_fx>/<id>/<id>.so" and IGNORES the
 # module.json "dsp" field (chain_host.c). Only sound_generators use dsp.so.
 set_target_properties(tape_echo2 PROPERTIES OUTPUT_NAME "tape-echo2" PREFIX "" SUFFIX ".so")
