@@ -3,6 +3,7 @@
  "name": "Tape Echo 2",
  "abbrev": "TE2",
  "version": "1.3.3",
+ "license": "GPL-3.0",
  "description": "Component-modeled vintage three-head tape echo with spring reverb: 12 head/reverb modes, tape saturation, wow & flutter, tape age, tempo sync.",
  "author": "Tape Echo 2 by Dusk Audio (GPL-3.0); port: athousanddetails",
  "dsp": "tape-echo2.so",
